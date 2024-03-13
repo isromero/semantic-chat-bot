@@ -2,7 +2,7 @@ import OpenAI from "openai";
 import { query } from "@/lib/db";
 
 const openai = new OpenAI({ apiKey: process.env.OPEN_API_KEY });
-const SIMILARITY_RANGE = 0.8;
+const SIMILARITY_RANGE = 0.9;
 
 const cosineSimilarity = (vecA, vecB) => {
   const dotProduct = vecA.reduce((acc, val, idx) => acc + val * vecB[idx], 0);
@@ -55,11 +55,10 @@ export default async function handler(req, res) {
     }
 
     if (!isSimilar) {
-      console.log('Nunca habías dicho nada parecido')
       const completionResponse = await openai.chat.completions.create({
         model: "gpt-3.5-turbo-16k",
         messages: [{ role: "user", content: question }],
-        max_tokens: 10,
+        max_tokens: 50,
         temperature: 0.5,
         n: 1,
       });
