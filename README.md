@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Semantic Chat Bot para Educaia (Prueba técnica)
 
-## Getting Started
+## Descripción
 
-First, run the development server:
+Este proyecto implementa un servicio de caché semántico mediante embeddings de OpenAI para un chatbot, diseñado para optimizar y reducir los costos de las consultas utilizando similaridad semántica. Esto permite agrupar preguntas similares y reutilizar respuestas ya existentes, ahorrando en costes. Además, se incluye una interfaz de usuario que permite visualizar y editar las respuestas.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Tecnologías Utilizadas
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Next.js**: Para el servidor API y la interfaz de usuario.
+- **PostgreSQL**: Para el almacenamiento persistente de datos.
+- **pgvector**: Para la gestión de vectores (embeddings) en la base de datos PostgreSQL.
+- **Tailwind CSS y shadcn**: Para el diseño y estilización de la interfaz de usuario.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### Requisitos Previos
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- Node.js
+- PostgreSQL con pgvector instalado
 
-## Learn More
+### Base de Datos
 
-To learn more about Next.js, take a look at the following resources:
+Para preparar tu base de datos PostgreSQL:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Instala la extensión `pgvector` en tu instancia de PostgreSQL si aún no está instalada.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+2. Crea la base de datos y la tabla necesarias ejecutando el siguiente comando SQL:
+```sql
+CREATE TABLE data (
+  id SERIAL PRIMARY KEY,
+  question TEXT NOT NULL,
+  answer TEXT NOT NULL,
+  embedding vector
+);
 
-## Deploy on Vercel
+### Instalación
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. **Clonar el repositorio**: Primero, clona este repositorio a tu máquina local utilizando Git. Abre una terminal y ejecuta el siguiente comando:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+   ```bash
+   git clone <URL_DEL_REPOSITORIO>
+   cd <NOMBRE_DEL_DIRECTORIO>
+   ```
+2. Instala las dependencias necesarias
+3. Configura las variables de entorno necesarias en un archivo `.env.local`, basándote en el archivo `.env.example` proporcionado.
+4. Configura la base de datos.
+5. Ejecuta la aplicación
+   ```bash
+   npm run dev
+   ```
+
