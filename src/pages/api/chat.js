@@ -58,7 +58,7 @@ export default async function handler(req, res) {
       const completionResponse = await openai.chat.completions.create({
         model: "gpt-3.5-turbo-16k",
         messages: [{ role: "user", content: question }],
-        max_tokens: 50,
+        max_tokens: 99,
         temperature: 0.5,
         n: 1,
       });
