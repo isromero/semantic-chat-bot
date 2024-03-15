@@ -78,7 +78,7 @@ export default function Chat() {
     }
   };
   return (
-    <Card className="w-3/4 h-[50rem] grid grid-rows-[min-content,1fr,min-content]">
+    <Card className="w-3/4 h-[75vh] grid grid-rows-[min-content,1fr,min-content]">
       <CardHeader>
         <CardTitle>Semantic Chat Bot</CardTitle>
         <CardDescription>Educaia's Interview by Ismael :)</CardDescription>
