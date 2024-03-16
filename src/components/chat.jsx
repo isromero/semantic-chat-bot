@@ -44,7 +44,7 @@ export default function Chat() {
   const handleCancelEdit = () => {
     setEditingIndex(null);
     setEditMessage("");
-  }
+  };
 
   const handleEdit = (index) => {
     setEditingIndex(index);
@@ -59,9 +59,48 @@ export default function Chat() {
     const updatedConversation = [...conversation];
     updatedConversation[editingIndex].text = editMessage;
 
-    // DB UPDATE LOGIC HERE
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ question: editMessage }),
+      });
 
-    setConversation(updatedConversation);
+      if (!response.ok) throw new Error("Network response was not ok");
+
+      const { answer } = await response.json();
+
+      if (editingIndex + 1 < updatedConversation.length) {
+        updatedConversation[editingIndex + 1].text = answer;
+      } else {
+        updatedConversation.push({ sender: "SemanticBot", text: answer });
+      }
+
+      setConversation(updatedConversation);
+      
+      // DB UPDATE LOGIC HERE
+    } catch (error) {
+      console.error("Error fetching response from OpenAI:", error);
+      if (editingIndex !== null) {
+        updatedConversation[editingIndex] = {
+          ...updatedConversation[editingIndex],
+          text: "Sorry, there was a problem getting a response.",
+        };
+        if (
+          editingIndex + 1 < updatedConversation.length &&
+          updatedConversation[editingIndex + 1].sender === "SemanticBot"
+        ) {
+          updatedConversation[editingIndex + 1] = {
+            ...updatedConversation[editingIndex + 1],
+            text: "Sorry, there was a problem getting a response.",
+          };
+        }
+      }
+      setConversation(updatedConversation);
+    }
+
     setEditingIndex(null);
     setEditMessage("");
   };
@@ -84,9 +123,7 @@ export default function Chat() {
         body: JSON.stringify({ question: message }),
       });
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
+      if (!response.ok) throw new Error("Network response was not ok");
 
       const { answer } = await response.json();
 
@@ -136,7 +173,13 @@ export default function Chat() {
                   autoFocus
                 />
                 <Button type="submit">Save</Button>
-                <Button type="button" onClick={handleCancelEdit} className="bg-transparent border border-black text-slate-700 hover:text-white hover:bg-red-400">Cancel</Button>
+                <Button
+                  type="button"
+                  onClick={handleCancelEdit}
+                  className="bg-transparent border border-black text-slate-700 hover:text-white hover:bg-red-400"
+                >
+                  Cancel
+                </Button>
               </form>
             ) : (
               <p className="leading-relaxed">
