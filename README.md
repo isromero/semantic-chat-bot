@@ -30,7 +30,7 @@ CREATE TABLE data (
   answer TEXT NOT NULL,
   embedding vector
 );
-
+```
 ### Instalación
 
 1. **Clonar el repositorio**: Primero, clona este repositorio a tu máquina local utilizando Git. Abre una terminal y ejecuta el siguiente comando:
